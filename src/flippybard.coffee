@@ -5,8 +5,9 @@ Game.scroll = ->
     entity.position.x -= 2
 
 Game.maxGrav = 6
-
-Game.tryNum = 0
+Game.tryNum  = 0
+Game.scoreInterval = null
+Game.jumpInterval  = null
 
 Game.initAll = ->
   @player = new Player({ x: 200, y: 200, sprite: 'img/bird1.png' })
@@ -24,7 +25,9 @@ Game.initAll = ->
 # "score" tracking. Don't want to bother tracking actual
 # columns, so just make something up
 Game.trackScore = ->
-  clearInterval(Game.scoreInterval)
+  return unless Game.player.isAlive
+  clearInterval(Game.scoreInterval) if Game.scoreInterval?
+
   Game.scoreInterval = setInterval =>
     Game.player.score += 1
   , 2000
@@ -97,5 +100,5 @@ Game.start = ->
 
 Kona.ready ->
   Kona.Canvas.init('gameCanvas')
-  Kona.Sounds.play('audio/getlucky.mp3', { autoplay: true, loop: true })
+  Kona.Sounds.play('audio/getlucky.ogg', { autoplay: true, loop: true })
   Game.initAll()
